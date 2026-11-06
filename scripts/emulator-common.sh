@@ -21,10 +21,10 @@ apk_fresh_launch() { # apk package
 }
 
 # Asserts what the stub received from package $1 with user id $2; prints ok/FAIL lines.
-stub_assert_android() { # package userId
+stub_assert_android() { # package userId [expected sdk.version]
   curl -sf "http://127.0.0.1:$stub_port/__requests" > "$work/requests.json"
-  node - "$work/requests.json" "$1" "$2" <<'JS'
-const [file, appId, userId] = process.argv.slice(2);
+  node - "$work/requests.json" "$1" "$2" "${3:-}" <<'JS'
+const [file, appId, userId, expectedVersion] = process.argv.slice(2);
 const all = JSON.parse(require('fs').readFileSync(file, 'utf8'));
 const installs = all.filter((r) => r.route === 'installs' && r.body && r.body.appId === appId);
 const install = installs[0];
@@ -40,6 +40,7 @@ check(install && install.body.playReferrer && !install.body.appleAds, 'carries p
 check(install && install.keyPrefix === 'fload_pk_', 'write key header');
 const linked = (install && install.body.appUserId === userId) || identifies.some((r) => r.status === 202 && r.body.appUserId === userId);
 check(linked, `user id ${userId} reached the stub`);
+if (expectedVersion) check(install && install.body.sdk && install.body.sdk.version === expectedVersion, `sdk.version is the pinned ${expectedVersion}`);
 console.log(`playReferrer: ${JSON.stringify(install && install.body.playReferrer)}  sdk: ${JSON.stringify(install && install.body.sdk)}`);
 require('fs').writeFileSync(file + '.ref', ref || '');
 process.exit(failed ? 1 : 0);

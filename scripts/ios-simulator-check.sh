@@ -35,7 +35,7 @@ xcrun simctl install "$udid" "$app"
 xcrun simctl launch "$udid" "$bundle"
 if ! stub_wait_install "$bundle" 60; then echo "FAIL no install reached the stub in 60 s"; cat "$work/stub.log"; exit 1; fi
 sleep 5
-stub_assert "$bundle" "example-user-1"
+stub_assert "$bundle" "example-user-1" "$(node -p "require('$root/package.json').floadNative.ios")"
 xcrun simctl terminate "$udid" "$bundle" || true
 xcrun simctl uninstall "$udid" "$bundle" || true
 echo "stub log:"; cat "$work/stub.log"

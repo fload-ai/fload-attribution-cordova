@@ -34,7 +34,7 @@ dependency to your app's Gradle build. To pin another 1.x version of the Android
 SDK:
 
 ```sh
-cordova plugin add @fload-ai/attribution-cordova --variable FLOAD_ATTRIBUTION_ANDROID_VERSION=1.0.1
+cordova plugin add @fload-ai/attribution-cordova --variable FLOAD_ATTRIBUTION_ANDROID_VERSION=1.0.2
 ```
 
 ## Use

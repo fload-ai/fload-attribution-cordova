@@ -34,7 +34,7 @@
 
     <!-- Android: a Java bridge over com.github.fload-ai:fload-attribution-android (JitPack). -->
     <platform name="android">
-        <preference name="FLOAD_ATTRIBUTION_ANDROID_VERSION" default="1.0.1" />
+        <preference name="FLOAD_ATTRIBUTION_ANDROID_VERSION" default="1.0.2" />
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FloadAttribution">
                 <param name="android-package" value="com.fload.attribution.cordova.FloadAttributionPlugin" />
