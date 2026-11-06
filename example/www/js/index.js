@@ -11,6 +11,7 @@ function showInstallReference(attempt) {
   FloadAttribution.getInstallReference().then(function (result) {
     if (result.installReference) {
       document.getElementById('installReference').textContent = result.installReference;
+      console.log('Fload example: install reference ' + result.installReference); // read by the emulator check
     } else if ((attempt || 0) < 10) {
       setTimeout(function () { showInstallReference((attempt || 0) + 1); }, 300);
     }

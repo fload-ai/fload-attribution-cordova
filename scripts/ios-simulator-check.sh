@@ -17,11 +17,14 @@ sim_boot
 stub_start 3999
 
 echo "== example app"
+# The plugin as npm would ship it (adding this folder itself would copy example/ into itself).
+run_logged npm-pack npm pack --pack-destination "$work"
+mkdir -p "$work/plugin" && tar xzf "$work"/fload-ai-attribution-cordova-*.tgz -C "$work/plugin"
 cd example
 rm -rf platforms plugins
 run_logged example-npm-install npm install --no-audit --no-fund
 run_logged cordova-platform-add-ios npx cordova platform add ios --nosave
-run_logged cordova-plugin-add npx cordova plugin add "$root" --nosave
+run_logged cordova-plugin-add npx cordova plugin add "$work/plugin/package" --nosave
 run_logged cordova-build-ios npx cordova build ios --emulator --debug
 app="$(find platforms/ios/build "$HOME/Library/Developer/Xcode/DerivedData" -maxdepth 6 -path '*iphonesimulator*' -name '*.app' -type d -newer "$work" 2>/dev/null | head -1)"
 [ -n "$app" ] || { echo "FAIL no .app built"; tail -60 "$work/cordova-build-ios.log"; exit 1; }
