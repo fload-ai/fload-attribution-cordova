@@ -1,0 +1,8 @@
+// Applied to the app module by Cordova. fload-attribution-android is built by
+// JitPack from its git tags; only that group is read from JitPack.
+repositories {
+    maven {
+        url 'https://jitpack.io'
+        content { includeGroup 'com.github.fload-ai' }
+    }
+}

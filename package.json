@@ -1,0 +1,47 @@
+{
+  "name": "@fload-ai/attribution-cordova",
+  "version": "1.0.0",
+  "description": "Fload install attribution for Cordova apps: Apple Ads through AdServices on iOS, the Google Play Install Referrer on Android.",
+  "types": "types/index.d.ts",
+  "cordova": {
+    "id": "fload-attribution-cordova",
+    "platforms": ["ios", "android"]
+  },
+  "files": [
+    "plugin.xml",
+    "Package.swift",
+    "www/",
+    "types/",
+    "src/"
+  ],
+  "engines": {
+    "cordovaDependencies": {
+      "1.0.0": {
+        "cordova": ">=12.0.0",
+        "cordova-ios": ">=8.0.0",
+        "cordova-android": ">=13.0.0"
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:ios-host": "sh scripts/host-test-ios.sh",
+    "test:android": "sh scripts/test-android.sh",
+    "stub-ingest": "node scripts/stub-ingest.mjs --port 3999"
+  },
+  "keywords": ["ecosystem:cordova", "cordova-ios", "cordova-android", "attribution", "apple ads", "adservices", "install referrer", "fload"],
+  "author": "Fload Technologies Limited",
+  "license": "MIT",
+  "homepage": "https://github.com/fload-ai/fload-attribution-cordova#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fload-ai/fload-attribution-cordova.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fload-ai/fload-attribution-cordova/issues"
+  },
+  "floadNative": {
+    "ios": "1.0.0",
+    "android": "1.0.1"
+  }
+}

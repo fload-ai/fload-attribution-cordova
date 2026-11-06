@@ -1,0 +1,9 @@
+node_modules/
+example/node_modules/
+example/platforms/
+example/plugins/
+.build/
+.swiftpm/
+Package.resolved
+*.tgz
+.DS_Store

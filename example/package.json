@@ -1,0 +1,17 @@
+{
+  "name": "fload-attribution-cordova-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example app for fload-attribution-cordova. Sends to a local stub ingest, never to production.",
+  "license": "MIT",
+  "scripts": {
+    "setup": "cordova platform add android ios --nosave && cordova plugin add .. --link --nosave",
+    "android": "cordova run android",
+    "ios": "cordova run ios"
+  },
+  "devDependencies": {
+    "cordova": "^13.0.0",
+    "cordova-android": "^15.1.0",
+    "cordova-ios": "^8.1.1"
+  }
+}

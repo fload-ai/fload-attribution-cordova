@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="fload-attribution-cordova"
+        version="1.0.0">
+    <name>Fload Attribution</name>
+    <description>Fload install attribution: Apple Ads through AdServices on iOS, the Google Play Install Referrer on Android.</description>
+    <license>MIT</license>
+    <keywords>fload,attribution,apple ads,adservices,install referrer</keywords>
+    <repo>https://github.com/fload-ai/fload-attribution-cordova.git</repo>
+    <issue>https://github.com/fload-ai/fload-attribution-cordova/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=12.0.0" />
+        <!-- Swift Package Manager plugins need cordova-ios 8. -->
+        <engine name="cordova-ios" version=">=8.0.0" />
+        <engine name="cordova-android" version=">=13.0.0" />
+    </engines>
+
+    <js-module src="www/fload-attribution.js" name="FloadAttribution">
+        <clobbers target="FloadAttribution" />
+    </js-module>
+
+    <!-- iOS: a Swift package (Package.swift at this plugin's root) that depends
+         on github.com/fload-ai/fload-attribution-ios. The app's config.xml
+         needs <preference name="deployment-target" value="15.0" />. -->
+    <platform name="ios" package="swift">
+        <config-file target="config.xml" parent="/*">
+            <feature name="FloadAttribution">
+                <param name="ios-package" value="FloadAttributionPlugin" />
+            </feature>
+        </config-file>
+    </platform>
+
+    <!-- Android: a Java bridge over com.github.fload-ai:fload-attribution-android (JitPack). -->
+    <platform name="android">
+        <preference name="FLOAD_ATTRIBUTION_ANDROID_VERSION" default="1.0.1" />
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="FloadAttribution">
+                <param name="android-package" value="com.fload.attribution.cordova.FloadAttributionPlugin" />
+            </feature>
+        </config-file>
+        <source-file src="src/android/com/fload/attribution/cordova/FloadAttributionPlugin.java" target-dir="src/com/fload/attribution/cordova" />
+        <source-file src="src/android/com/fload/attribution/cordova/PluginArguments.java" target-dir="src/com/fload/attribution/cordova" />
+        <framework src="src/android/fload-attribution.gradle" custom="true" type="gradleReference" />
+        <framework src="com.github.fload-ai:fload-attribution-android:$FLOAD_ATTRIBUTION_ANDROID_VERSION" />
+    </platform>
+</plugin>

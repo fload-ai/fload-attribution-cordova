@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self'" />
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0" />
+    <title>Fload Attribution example</title>
+    <style>
+      body { font: 16px -apple-system, system-ui, sans-serif; margin: 0; padding: env(safe-area-inset-top) 16px 16px; color: #1a1a1a; background: #fff; }
+      h1 { font-size: 20px; margin: 16px 0 4px; }
+      p { color: #555; margin: 0 0 16px; }
+      label { display: block; font-size: 13px; color: #555; margin: 12px 0 4px; }
+      input { width: 100%; box-sizing: border-box; font: inherit; padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+      button { font: inherit; margin: 8px 8px 0 0; padding: 8px 14px; border: 0; border-radius: 6px; background: #5044dc; color: #fff; }
+      code, pre { font: 13px ui-monospace, Menlo, monospace; }
+      pre { background: #f4f4f6; padding: 8px; border-radius: 6px; white-space: pre-wrap; min-height: 6em; }
+    </style>
+  </head>
+  <body>
+    <h1>Fload Attribution</h1>
+    <p>Sends this install to a local stub ingest. Run <code>npm run stub-ingest</code> in the plugin folder first.</p>
+    <label for="userId">User id</label>
+    <input id="userId" value="example-user-1" autocapitalize="off" autocorrect="off" />
+    <button id="setUserId">setUserId</button>
+    <label>Install reference</label>
+    <pre id="installReference">…</pre>
+    <label>Log</label>
+    <pre id="log"></pre>
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

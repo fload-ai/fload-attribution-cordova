@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.fload.attribution.cordovaexample" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Fload Cordova Example</name>
+    <description>Sends this install to a local stub of Fload's ingest.</description>
+    <author href="https://fload.com">Fload</author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <!-- fload-attribution-ios needs iOS 15. -->
+    <preference name="deployment-target" value="15.0" />
+
+    <platform name="android">
+        <!-- The stub ingest is plain http on the host (10.0.2.2 from the emulator).
+             A real app sends to Fload's https endpoint and needs none of this. -->
+        <resource-file src="res/android/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:networkSecurityConfig="@xml/network_security_config" />
+        </edit-config>
+    </platform>
+    <platform name="ios">
+        <!-- The stub ingest is plain http on localhost. -->
+        <edit-config file="*-Info.plist" mode="merge" target="NSAppTransportSecurity">
+            <dict>
+                <key>NSAllowsLocalNetworking</key>
+                <true/>
+            </dict>
+        </edit-config>
+    </platform>
+</widget>
