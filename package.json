@@ -27,7 +27,8 @@
     "test": "node --test test/*.test.js",
     "test:ios-host": "sh scripts/host-test-ios.sh",
     "test:android": "sh scripts/test-android.sh",
-    "stub-ingest": "node scripts/stub-ingest.mjs --port 3999"
+    "stub-ingest": "node scripts/stub-ingest.mjs --port 3999",
+    "check:ios-simulator": "sh scripts/ios-simulator-check.sh"
   },
   "keywords": ["ecosystem:cordova", "cordova-ios", "cordova-android", "attribution", "apple ads", "adservices", "install referrer", "fload"],
   "author": "Fload Technologies Limited",
