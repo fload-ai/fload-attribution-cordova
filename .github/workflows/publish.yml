@@ -1,0 +1,73 @@
+name: Publish to npm
+
+# Manual only. It defaults to a dry run: test, pack and `npm publish --dry-run`.
+# A real publish needs dry_run unticked and the NPM_TOKEN org secret.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Dry run (test and pack; publish nothing)
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write # npm provenance, once the repository is public
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: The tag matches package.json and plugin.xml
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          test "${GITHUB_REF_NAME}" = "$(node -p "require('./package.json').version")"
+          grep -q "version=\"${GITHUB_REF_NAME}\"" plugin.xml
+
+      - name: package.json and plugin.xml agree on the version
+        run: grep -q "version=\"$(node -p "require('./package.json').version")\"" plugin.xml
+
+      - name: JS layer
+        run: npm test
+
+      - name: iOS argument checks (host Swift)
+        run: npm run test:ios-host
+
+      - name: Android argument checks (JVM)
+        run: npm run test:android
+
+      - name: Package contents
+        run: npm pack --dry-run
+
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          PRIVATE_REPO: ${{ github.event.repository.private }}
+        shell: bash
+        run: |
+          flags=(--access public)
+          # npm provenance works only from a public repository.
+          if [ "$PRIVATE_REPO" = "false" ]; then flags+=(--provenance); fi
+          if [ "$DRY_RUN" = "true" ]; then
+            npm publish "${flags[@]}" --dry-run
+          else
+            npm publish "${flags[@]}"
+          fi
