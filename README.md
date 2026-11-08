@@ -30,11 +30,11 @@ your `config.xml`:
 
 **Android.** The Kotlin SDK comes from [JitPack](https://jitpack.io). The plugin
 adds the JitPack repository (for the `com.github.fload-ai` group only) and the
-dependency to your app's Gradle build. To pin another 1.x version of the Android
-SDK:
+dependency to your app's Gradle build. It uses version 1.1.0 of the Android SDK
+by default. To pin another 1.x version, use 1.1.0 or later:
 
 ```sh
-cordova plugin add @fload-ai/attribution-cordova --variable FLOAD_ATTRIBUTION_ANDROID_VERSION=1.0.2
+cordova plugin add @fload-ai/attribution-cordova --variable FLOAD_ATTRIBUTION_ANDROID_VERSION=1.1.0
 ```
 
 ## Use

@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="fload-attribution-cordova"
-        version="1.0.0">
+        version="1.1.0">
     <name>Fload Attribution</name>
     <description>Fload install attribution: Apple Ads through AdServices on iOS, the Google Play Install Referrer on Android.</description>
     <license>MIT</license>
@@ -34,7 +34,7 @@
 
     <!-- Android: a Java bridge over com.github.fload-ai:fload-attribution-android (JitPack). -->
     <platform name="android">
-        <preference name="FLOAD_ATTRIBUTION_ANDROID_VERSION" default="1.0.2" />
+        <preference name="FLOAD_ATTRIBUTION_ANDROID_VERSION" default="1.1.0" />
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FloadAttribution">
                 <param name="android-package" value="com.fload.attribution.cordova.FloadAttributionPlugin" />
