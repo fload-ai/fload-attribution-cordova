@@ -84,6 +84,14 @@ function validate(route, b) {
   else {
     text(p, b.sdk, 'name', 64, true, 'sdk.');
     text(p, b.sdk, 'version', 64, true, 'sdk.');
+    // Optional: the cross-platform wrapper around the native SDK (native 1.1.0 and later).
+    if (b.sdk.wrapper !== undefined) {
+      if (typeof b.sdk.wrapper !== 'object' || b.sdk.wrapper === null) p.push('sdk.wrapper must be an object');
+      else {
+        text(p, b.sdk.wrapper, 'name', 64, true, 'sdk.wrapper.');
+        text(p, b.sdk.wrapper, 'version', 64, true, 'sdk.wrapper.');
+      }
+    }
   }
   instant(p, b, 'firstLaunchAt', true);
   text(p, b, 'appUserId', 256, false);
@@ -136,7 +144,8 @@ function redact(body) {
 function summary(b) {
   if (!b || typeof b !== 'object') return '';
   const source = b.appleAds ? `appleAds=${b.appleAds.status}` : b.playReferrer ? `playReferrer=${b.playReferrer.status}` : '';
-  return [b.platform, b.appId, b.sdk ? `${b.sdk.name}/${b.sdk.version}` : '', source, b.appUserId ? 'appUserId=set' : ''].filter(Boolean).join(' ');
+  const wrapper = b.sdk && b.sdk.wrapper ? ` via ${b.sdk.wrapper.name}/${b.sdk.wrapper.version}` : '';
+  return [b.platform, b.appId, b.sdk ? `${b.sdk.name}/${b.sdk.version}${wrapper}` : '', source, b.appUserId ? 'appUserId=set' : ''].filter(Boolean).join(' ');
 }
 function readBody(req) {
   return new Promise((resolve, reject) => {

@@ -65,10 +65,10 @@ stub_wait_install() { # appId seconds
 }
 
 # Asserts what the stub received from app id $1 with user id $2; prints ok/FAIL lines.
-stub_assert() { # appId userId [expected sdk.version]
+stub_assert() { # appId userId [expected sdk.version] [expected sdk.wrapper name] [expected sdk.wrapper version]
   curl -sf "http://127.0.0.1:$stub_port/__requests" > "$work/requests.json"
-  node - "$work/requests.json" "$1" "$2" "${3:-}" <<'JS'
-const [file, appId, userId, expectedVersion] = process.argv.slice(2);
+  node - "$work/requests.json" "$1" "$2" "${3:-}" "${4:-}" "${5:-}" <<'JS'
+const [file, appId, userId, expectedVersion, wrapperName, wrapperVersion] = process.argv.slice(2);
 const all = JSON.parse(require('fs').readFileSync(file, 'utf8'));
 const installs = all.filter((r) => r.route === 'installs' && r.body && r.body.appId === appId);
 const install = installs[0];
@@ -84,6 +84,12 @@ check(install && install.keyPrefix === 'fload_pk_', 'write key header');
 const linked = (install && install.body.appUserId === userId) || identifies.some((r) => r.status === 202 && r.body.appUserId === userId);
 check(linked, `user id ${userId} reached the stub`);
 if (expectedVersion) check(install && install.body.sdk && install.body.sdk.version === expectedVersion, `sdk.version is the pinned ${expectedVersion}`);
+if (wrapperName) {
+  const w = install && install.body.sdk && install.body.sdk.wrapper;
+  check(w && w.name === wrapperName && w.version === wrapperVersion, `sdk.wrapper is ${wrapperName} ${wrapperVersion}`);
+  const named = identifies.filter((r) => r.body.sdk && r.body.sdk.wrapper && r.body.sdk.wrapper.name === wrapperName);
+  if (identifies.length) check(named.length === identifies.length, `every identify names ${wrapperName} too`);
+}
 console.log(`appleAds: ${JSON.stringify(install && install.body.appleAds)}  sdk: ${JSON.stringify(install && install.body.sdk)}`);
 process.exit(failed ? 1 : 0);
 JS
