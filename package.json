@@ -1,6 +1,6 @@
 {
   "name": "@fload-ai/attribution-cordova",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Fload install attribution for Cordova apps: Apple Ads through AdServices on iOS, the Google Play Install Referrer on Android.",
   "types": "types/index.d.ts",
   "cordova": {

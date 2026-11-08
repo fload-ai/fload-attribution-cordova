@@ -2,6 +2,7 @@ package com.fload.attribution.cordova;
 
 import com.fload.attribution.FloadLogLevel;
 import com.fload.attribution.FloadOptions;
+import com.fload.attribution.FloadWrapper;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -9,6 +10,14 @@ import java.util.Map;
 
 /** The plugin's argument rules, kept free of Cordova so they can be unit tested. */
 final class PluginArguments {
+    /**
+     * This plugin as every request names it (`sdk.wrapper`). Java cannot read
+     * package.json at build time, so the version is a constant;
+     * test/versions.test.js and PluginArgumentsTest hold it equal to package.json.
+     */
+    static final String WRAPPER_NAME = "cordova";
+    static final String WRAPPER_VERSION = "1.1.0";
+
     static final Map<String, FloadLogLevel> LOG_LEVELS = new HashMap<>();
 
     static {
@@ -54,7 +63,8 @@ final class PluginArguments {
                 return failure("Fload: logLevel must be one of none, error, warning, info, debug");
             }
         }
-        return new Configuration(key, new FloadOptions(resolvedEndpoint, level), null);
+        FloadWrapper wrapper = new FloadWrapper(WRAPPER_NAME, WRAPPER_VERSION);
+        return new Configuration(key, new FloadOptions(resolvedEndpoint, level, wrapper), null);
     }
 
     private static Configuration failure(String message) {

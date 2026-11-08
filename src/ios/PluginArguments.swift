@@ -14,6 +14,11 @@ struct PluginArguments {
         let message: String
     }
 
+    /// This plugin as every request names it (`sdk.wrapper`). Swift has no
+    /// build-time access to package.json, so the version is a constant;
+    /// test/versions.test.js and the host checks hold it equal to package.json.
+    static let wrapper = FloadWrapper(name: "cordova", version: "1.1.0")
+
     var key: String?
     var endpoint: String?
     var logLevel: String?
@@ -22,7 +27,7 @@ struct PluginArguments {
         guard let key, !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return .failure(Failure(message: "Fload: configure needs { key: \"fload_pk_…\" }"))
         }
-        var options = FloadOptions()
+        var options = FloadOptions(wrapper: Self.wrapper)
         if let endpoint {
             guard let url = URL(string: endpoint), url.scheme == "https" || url.scheme == "http" else {
                 return .failure(Failure(message: "Fload: endpoint must be an http(s) URL"))
