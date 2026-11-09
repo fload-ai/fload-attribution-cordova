@@ -1,7 +1,9 @@
 name: Publish to npm
 
 # Manual only. It defaults to a dry run: test, pack and `npm publish --dry-run`.
-# A real publish needs dry_run unticked and the NPM_TOKEN org secret.
+# A real publish needs dry_run unticked. It signs in by npm trusted publishing
+# (OIDC), with no npm token: the package's trusted publisher on npmjs.com
+# names this repository and publish.yml.
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +14,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # npm provenance, once the repository is public
+  id-token: write # npm trusted publishing (OIDC) and provenance
 
 concurrency:
   group: publish
@@ -29,6 +31,12 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+
+      # Trusted publishing's OIDC exchange needs npm CLI 11.5.1 or newer.
+      - name: npm 11.21.1
+        run: |
+          npm install -g npm@11.21.1
+          test "$(npm --version)" = 11.21.1
 
       - uses: actions/setup-java@v4
         with:
@@ -58,7 +66,6 @@ jobs:
 
       - name: Publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
           PRIVATE_REPO: ${{ github.event.repository.private }}
         shell: bash
